@@ -17,7 +17,8 @@
     ],
     "require": {
         "php": ">=8.1",
-        "ext-mbstring": "*"
+        "ext-mbstring": "*",
+        "spec-doc/kernel-contracts": "dev-main"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"
