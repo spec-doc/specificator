@@ -3,19 +3,30 @@
 namespace SpecDoc\Specificator\Tests;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use SpecDoc\Specificator\Kernel;
+use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
 
 class KernelTest extends TestCase
 {
     /**
-     * @var Kernel setUp/tearDown use
+     * @var Kernel|null setUp/tearDown use
      */
-    private $kernel;
+    private ?Kernel $kernel = null;
 
-    public function testLoad()
+    /**
+     * @dataProvider contentProvider
+     */
+    public function testLoad($source)
     {
-        $this->markTestIncomplete();
+        $this->assertInstanceOf(Kernel::class, $this->kernel->load($source));
+    }
+
+    public function testCouldNotBeLoadException()
+    {
+        $this->expectException(CouldNotBeLoadedException::class);
+        $this->kernel->load(__DIR__ . '/TestData/WithoutContent');
     }
 
     public function testGetSpecifications()
@@ -90,5 +101,13 @@ class KernelTest extends TestCase
     protected function tearDown(): void
     {
         $this->kernel = null;
+    }
+
+    public static function contentProvider(): iterable
+    {
+        return [
+            'source file' => [__DIR__ . '/TestData/WithContent'],
+            'source string' => ['string']
+        ];
     }
 }

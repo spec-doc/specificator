@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace SpecDoc\Specificator;
 
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
+use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 
+use function file_get_contents;
 use function in_array;
+use function is_file;
+use function mb_strlen;
+use function sprintf;
 
 /**
  * Implements document management methods in accordance with their specifications.
  */
 final class Kernel
 {
+    /**
+     * @var string|null
+     */
+    private ?string $content = null;
+
     /**
      * @var array Available specifications
      */
@@ -29,9 +39,21 @@ final class Kernel
      * @param string $source Source for processing
      *
      * @return self
+     *
+     * @throws CouldNotBeLoadedException
      */
+
     public function load(string $source): self
     {
+        try {
+            $content = is_file($source) ? file_get_contents($source) : $source;
+            0 !== mb_strlen($content)
+                ? $this->content = $content
+                : throw new CouldNotBeLoadedException('The source should not be empty');
+        } catch (\Exception) {
+            throw new CouldNotBeLoadedException(sprintf('The %s source could not be loaded', $source));
+        }
+
         return $this;
     }
 
@@ -83,5 +105,29 @@ final class Kernel
         $this->specification = $specification;
 
         return $this;
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     *
+     * @return bool
+     */
+    public function up(int $major = 1, int $minor = 0, int $patch = 0): bool
+    {
+
+    }
+
+    /**
+     * @param int $major
+     * @param int $minor
+     * @param int $patch
+     *
+     * @return bool
+     */
+    public function down(int $major = 1, int $minor = 0, int $patch = 0): bool
+    {
+
     }
 }
