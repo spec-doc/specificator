@@ -9,7 +9,10 @@ use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 
 use function file_get_contents;
 use function in_array;
+use function is_array;
 use function is_file;
+use function is_subclass_of;
+use function is_string;
 use function mb_strlen;
 use function sprintf;
 
@@ -70,14 +73,21 @@ final class Kernel
     /**
      * Adds the specification to the list of available.
      *
-     * @param SpecificationInterface $specification
+     * @param SpecificationInterface|string|array $specification
      *
      * @return self
      */
-    public function addSpecification(SpecificationInterface $specification): self
+    public function addSpecification(SpecificationInterface|string|array $specification): self
     {
-        if (!in_array($specification, $this->specifications, true)) {
-            $this->specifications[] = $specification;
+        if (is_subclass_of($specification, SpecificationInterface::class)) {
+            in_array($specification, $this->specifications) ?: $this->specifications[] = $specification;
+        } elseif (is_array($specification)) {
+            foreach ($specification as $specValue) {
+                $this->addSpecification($specValue);
+            }
+        } elseif (is_string($specification)) {
+            $object = new $specification();
+            $this->addSpecification($object);
         }
 
         return $this;
@@ -105,29 +115,5 @@ final class Kernel
         $this->specification = $specification;
 
         return $this;
-    }
-
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     *
-     * @return bool
-     */
-    public function up(int $major = 1, int $minor = 0, int $patch = 0): bool
-    {
-
-    }
-
-    /**
-     * @param int $major
-     * @param int $minor
-     * @param int $patch
-     *
-     * @return bool
-     */
-    public function down(int $major = 1, int $minor = 0, int $patch = 0): bool
-    {
-
     }
 }

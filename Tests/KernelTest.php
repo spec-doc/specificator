@@ -7,6 +7,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SpecDoc\Specificator\Kernel;
 use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
+use SpecDoc\Specificator\Tests\Fixtures\FirstEmptySpecification;
+use SpecDoc\Specificator\Tests\Fixtures\SecondEmptySpecification;
 
 class KernelTest extends TestCase
 {
@@ -56,12 +58,14 @@ class KernelTest extends TestCase
         $this->assertNull($this->kernel->getSpecification());
     }
 
-    public function testAddNewSpecification()
+    /**
+     * @dataProvider specificationProvider
+     */
+    public function testAddNewSpecification($specification, int $count)
     {
-        $specification = $this->createMock(SpecificationInterface::class);
         $this->kernel->addSpecification($specification);
 
-        $this->assertCount(1, $this->kernel->getSpecifications());
+        $this->assertCount($count, $this->kernel->getSpecifications());
     }
 
     public function testAddExistSpecification()
@@ -71,26 +75,6 @@ class KernelTest extends TestCase
         $this->kernel->addSpecification($specification);
 
         $this->assertCount(1, $this->kernel->getSpecifications());
-    }
-
-    public function testUp()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testUpTo()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testDown()
-    {
-        $this->markTestIncomplete();
-    }
-
-    public function testDownTo()
-    {
-        $this->markTestIncomplete();
     }
 
     protected function setUp(): void
@@ -108,6 +92,27 @@ class KernelTest extends TestCase
         return [
             'source file' => [__DIR__ . '/TestData/WithContent'],
             'source string' => ['string']
+        ];
+    }
+
+    public static function specificationProvider(): iterable
+    {
+        return [
+            'object test' => [
+                new FirstEmptySpecification(),
+                1
+            ],
+            'string test' => [
+                SecondEmptySpecification::class,
+                1
+            ],
+            'array test' => [
+                [
+                    new FirstEmptySpecification(),
+                    SecondEmptySpecification::class
+                ],
+                2
+            ]
         ];
     }
 }
