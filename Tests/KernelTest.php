@@ -22,7 +22,8 @@ class KernelTest extends TestCase
      */
     public function testLoad($source)
     {
-        $this->assertInstanceOf(Kernel::class, $this->kernel->load($source));
+        $kernel = clone $this->kernel;
+        $this->assertNotEquals($this->kernel->load($source), $kernel);
     }
 
     public function testCouldNotBeLoadException()
