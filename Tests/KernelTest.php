@@ -8,7 +8,6 @@ use SpecDoc\Specificator\Kernel;
 use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
 use SpecDoc\Specificator\Tests\Fixtures\EmptySpecification;
-use SpecDoc\Specificator\Tests\Fixtures\SecondEmptySpecification;
 
 class KernelTest extends TestCase
 {
