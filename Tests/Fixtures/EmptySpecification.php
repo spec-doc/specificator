@@ -6,4 +6,4 @@ namespace SpecDoc\Specificator\Tests\Fixtures;
 
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
 
-class SecondEmptySpecification implements SpecificationInterface {}
+class EmptySpecification implements SpecificationInterface {}

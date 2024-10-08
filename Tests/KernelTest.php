@@ -7,7 +7,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SpecDoc\Specificator\Kernel;
 use SpecDoc\Specificator\Exception\CouldNotBeLoadedException;
 use SpecDoc\Specificator\Contracts\Specification\SpecificationInterface;
-use SpecDoc\Specificator\Tests\Fixtures\FirstEmptySpecification;
+use SpecDoc\Specificator\Tests\Fixtures\EmptySpecification;
 use SpecDoc\Specificator\Tests\Fixtures\SecondEmptySpecification;
 
 class KernelTest extends TestCase
@@ -62,16 +62,16 @@ class KernelTest extends TestCase
     /**
      * @dataProvider specificationProvider
      */
-    public function testAddNewSpecification($specification, int $count)
+    public function testAddSpecification($specification)
     {
         $this->kernel->addSpecification($specification);
 
-        $this->assertCount($count, $this->kernel->getSpecifications());
+        $this->assertCount(1, $this->kernel->getSpecifications());
     }
 
     public function testAddExistSpecification()
     {
-        $specification = $this->createMock(SpecificationInterface::class);
+        $specification = $this->createStub(SpecificationInterface::class);
         $this->kernel->addSpecification($specification);
         $this->kernel->addSpecification($specification);
 
@@ -100,19 +100,15 @@ class KernelTest extends TestCase
     {
         return [
             'object test' => [
-                new FirstEmptySpecification(),
-                1
+                new EmptySpecification()
             ],
             'string test' => [
-                SecondEmptySpecification::class,
-                1
+                EmptySpecification::class
             ],
             'array test' => [
                 [
-                    new FirstEmptySpecification(),
-                    SecondEmptySpecification::class
-                ],
-                2
+                    EmptySpecification::class
+                ]
             ]
         ];
     }
