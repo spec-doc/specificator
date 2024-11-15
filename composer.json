@@ -1,0 +1,41 @@
+{
+    "name": "spec-doc/specificator",
+    "type": "library",
+    "description": "Document handler in accordance with their specifications",
+    "license": "MIT",
+    "keywords": ["specification", "document", "handler"],
+    "homepage": "https://github.com/spec-doc",
+    "support": {
+        "issues": "https://github.com/spec-doc/specificator/issues",
+        "source": "https://github.com/spec-doc/specificator"
+    },
+    "authors": [
+        {
+            "name": "Ivan Mezinov",
+            "email": "ivanmezinov@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "ext-mbstring": "*",
+        "spec-doc/specificator-contracts": "dev-main"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SpecDoc\\Specificator\\": ""
+        },
+        "exclude-from-classmap": [
+            "Tests/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SpecDoc\\Specificator\\Tests\\": "Tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
