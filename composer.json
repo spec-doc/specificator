@@ -17,8 +17,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "ext-mbstring": "*",
-        "spec-doc/specificator-contracts": "dev-main"
+        "ext-mbstring": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0"
